@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+(% load static %}
+
+
+{% block title %}
+{% if category %}
+     {{category.cname}} - ABC STORE
+{% else %}
+     See oru new collections ! - ABC STORE
+{% endif %}
+{% endblock %}
+
+
+
+{% block content %}
+{% if category %}
+<div>
+     <div class="row my_row_class">
+          <div class="mx-auto">
+          <p><a href="{% url 'ecommerceapp:allproducts' %}" style="color:black;">Our product collections</a></p>
+     </div>
+          </div>
+</div>
+{% endif %}
+<div class="mx-auto">
+     {% if category %}
+     <img class="my_image" src="{{category.cimage.url}}" alt="{{category.cname}}" style="height:500px;width:1500px;">
+</div>
+<div>
+     <h1 class="text-center my_title" style="font-size:30px;">{{category.cname}}</h1>
+     <p class="text-justify">{{category.cdesc}}</p>
+</div>
+     {% else %}
+{% load static %}
+<div>
+     <img class="my_image my_image_padding" src="{% static 'img/banner1.jpg' %}" alt="banner" width="1450px;" height="600px;">
+</div>
+
+<br>
+<div>
+     <h2 class="text-center my_title">OUR PRODUCTS COLLECTIONS</h2>
+     <p class="text-justify">Books are a treasure trove of knowledge. It is essential to inculcate reading habits from an early age to develop vocabulary and imaginative skills. Whether you are looking for storybooks for kids, novels for grown-ups, study material for education, preparatory books for competitive exams, or copies related to art and craft, you can browse and explore a wide range of options available in this store, Also there are more cakes available where you can enjoy while reading books.Whatever the occasion is, just go ahead to order cake in from us and savor their taste buds with a deliciously rich cake. </p>
+</div>
+     {% endif %}
+<div class="container">
+     <div class="row mx-auto">
+          {% for product in products.object_list %}
+          <div class="my_bottom_margin col-9 col-sm-12 col-md-4  col-lg-4">
+               <div class="card text-center" style="min-width:18rem;">
+                    <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.pimage.url}}" alt="{{product.pname}}" width="300px;" height="300px;"></a>
+                    <div class="card-body">
+                         <h4>{{product.pname}}</h4>
+                         <p>{{product.pprice}}</p>
+                    </div>
+               </div>
+          </div>
+          {% endfor %}
+     </div>
+     <div class="max-auto">
+          {% if products.paginator.num_pages > 1 %}
+
+         <hr>
+          <div class="text-center">
+               {% for pg in products.paginator.page_range %}
+               <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+               {% endfor %}
+          </div>
+                    {% endif %}
+     </div>
+     <br>
+</div>
+{% endblock %}
+
+
+
